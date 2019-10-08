@@ -1,2 +1,2 @@
 # installWP
-install wordpress from nothing 
+install wordpress from nothing on smartOS 
