@@ -16,6 +16,22 @@ siteProto="http://"
 # Create variable from inputed ones
 siteFP="/home/wpuser/${siteURL}/public_html"
 
+mdata_get () {
+siteName=$(mdata-get MsiteName)
+siteTitle=$(mdata-get MsiteTitle)
+adminEmail=$(mdata-get MadminEmail)
+siteProto=$(mdata-get MsiteProto)
+siteURL=$(mdata-get MsiteURL)
+}
+
+mdata_put () {
+# mput to triton
+mdata-put wpadmin_email ${adminEmail}
+mdata-put wpadmin_password ${wpapasswd}
+mdata-put root_SQL_password ${sqlpswd}
+mdata-put wp_SQL_password ${wpasswd}
+}
+
 #### NGINX CONFIG FILE TEMPLATE ####
 nginx-conf () {
 # Make conf.d directory
@@ -238,8 +254,4 @@ echo "${siteName} is at ${siteProto}${siteURL} with the title ${siteTitle} and t
 echo "The wp-admin email/username is: ${adminEmail} and the password is: ${wpapasswd}"
 echo "Thank you and have a great day"
 
-# mput to triton
-mdata-put wpadmin_email adminEmail
-mdata-put wpadmin_password ${wpapasswd}
-mdata-put root_SQL_password ${sqlpswd}
-mdata-put wp_SQL_password ${wpasswd}
+mdata_put
