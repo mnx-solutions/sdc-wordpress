@@ -16,9 +16,10 @@
 mdata_get () {
 siteName=$(mdata-get MsiteName)
 siteTitle=$(mdata-get MsiteTitle)
-adminEmail=$(mdata-get MadminEmail)
+#adminEmail=$(mdata-get MadminEmail)
 siteProto=$(mdata-get MsiteProto)
 siteURL=$(mdata-get MsiteURL)
+fullURL="${siteProto}${siteURL}"
 }
 
 mdata_put () {
@@ -27,6 +28,7 @@ mdata-put wpadmin_email ${adminEmail}
 mdata-put wpadmin_password ${wpapasswd}
 mdata-put root_SQL_password ${sqlpswd}
 mdata-put wp_SQL_password ${wpasswd}
+mdata-put full_URL ${fullURL}
 }
 
 #### NGINX CONFIG FILE TEMPLATE ####
@@ -231,6 +233,9 @@ create_wp_db
 # Install CP CLI
 wget "https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar" -O /opt/local/sbin/wp
 chmod +x /opt/local/sbin/wp
+
+# create admin email 
+adminEmail="admin@${siteURL}"
 
 # Create site with wp-cli
 mkdir -p "${siteFP}" || exit
