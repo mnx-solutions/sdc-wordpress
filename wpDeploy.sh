@@ -7,7 +7,7 @@
 
 ##### EDIT HERE ####
 siteName="_"
-siteTitle=testing1234Title
+siteTitle="TEST"
 adminEmail="test@test.com"
 siteURL="test.url.com"
 siteProto="http://"
