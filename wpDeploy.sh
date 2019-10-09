@@ -13,9 +13,6 @@ siteURL="test.url.com"
 siteProto="http://"
 #### DON"T TOUCH BELOW HERE ####
 
-# Create variable from inputed ones
-siteFP="/home/wpuser/${siteURL}/public_html"
-
 mdata_get () {
 siteName=$(mdata-get MsiteName)
 siteTitle=$(mdata-get MsiteTitle)
@@ -209,6 +206,12 @@ pkgin -y in php73-zip
 #                           Starts HERE                                #
 #                                                                      #
 ########################################################################
+
+# Create variable from inputed ones
+siteFP="/home/wpuser/${siteURL}/public_html"
+
+# get mdata
+mdata_get
 
 # Create users
 useradd wpuser
