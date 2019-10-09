@@ -6,11 +6,11 @@
 # 20190930 v1
 
 ##### EDIT HERE ####
-siteName="_"
-siteTitle="TEST"
-adminEmail="test@test.com"
-siteURL="test.url.com"
-siteProto="http://"
+#siteName="_"
+#siteTitle="TEST"
+#adminEmail="test@test.com"
+#siteURL="test.url.com"
+#siteProto="http://"
 #### DON"T TOUCH BELOW HERE ####
 
 mdata_get () {
