@@ -104,7 +104,7 @@ server {
         ## Your website name goes here.
         server_name ${siteURL};
         ## Your only path reference.
-        root ${siteFP};
+        root "${siteFP}";
         ## This should be in your http block and if it is, it's not needed here.
         index index.php;
 
@@ -223,7 +223,7 @@ siteProto="http://"
 ssl=0
 
 # Create variable from inputed ones
-siteFP="/home/wpuser/${siteURL}public_html"
+siteFP="/home/wpuser/${siteURL}/public_html"
 
 # get mdata
 mdata_get

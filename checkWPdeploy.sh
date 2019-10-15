@@ -4,7 +4,7 @@
 
 if [[ $(mdata-get MWPinstall) == "yes" ]]; then
 	cd /root/
-	curl -s -o 'wpDeploy.sh' 'https://raw.githubusercontent.com/mnxnick2/installWPnick/master/wpDeploy.sh'
+	curl -s -o 'wpDeploy.sh' 'https://raw.githubusercontent.com/mnx-solutions/sdc-wordpress/master/wpDeploy.sh'
 	chmod './wpDeploy.sh'
 	bash -x './wpDeploy.sh'
 else
