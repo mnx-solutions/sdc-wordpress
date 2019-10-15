@@ -226,7 +226,7 @@ ssl=0
 mdata_get
 
 # Create variable from inputed ones
-siteFP="/home/wpuser/${siteURL}/public_html"
+siteFP="/home/wpuser/httpdocs/${siteURL}/public_html"
 
 # Create users
 useradd wpuser
