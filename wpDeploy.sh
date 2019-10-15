@@ -102,7 +102,7 @@ EOF
 cat <<EOF > "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
 server {
         ## Your website name goes here.
-        server_name ${siteURL};
+        server_name "${siteURL}";
         ## Your only path reference.
         root "${siteFP}";
         ## This should be in your http block and if it is, it's not needed here.
