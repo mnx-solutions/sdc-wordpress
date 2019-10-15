@@ -35,6 +35,7 @@ mdata-put wpadmin_password ${wpapasswd}
 mdata-put root_SQL_password ${sqlpswd}
 mdata-put wp_SQL_password ${wpasswd}
 mdata-put full_URL ${fullURL}
+mdata-put done_time $(date +'%Y%m%d_%H%M%S')
 }
 
 #### NGINX CONFIG FILE TEMPLATE ####
