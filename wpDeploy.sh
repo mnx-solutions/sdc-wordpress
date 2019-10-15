@@ -184,7 +184,7 @@ pkgin -y in nano
 pkgin -y in nginx
 #pkgin -y in mariadb-server-10
 #pkgin -y in mysql-server-5.7.26nb2 mysql-client-5.7.26nb2
-pkgin -y in mysql-server mysql-client
+pkgin -y in mysql-server-5 mysql-client-5
 /usr/sbin/svcadm enable -r svc:/pkgsrc/mysql:default
 
 # Install PHP stuff
