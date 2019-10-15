@@ -222,11 +222,11 @@ pkgin -y in php73-zip
 siteProto="http://"
 ssl=0
 
-# Create variable from inputed ones
-siteFP="/home/wpuser/${siteURL}/public_html"
-
 # get mdata
 mdata_get
+
+# Create variable from inputed ones
+siteFP="/home/wpuser/${siteURL}/public_html"
 
 # Create users
 useradd wpuser
