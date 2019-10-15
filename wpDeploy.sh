@@ -35,6 +35,7 @@ mdata-put full_URL ${fullURL}
 nginx-conf () {
 # Make conf.d directory
 mkdir -p /opt/local/etc/nginx/conf.d
+mkdir -p /opt/local/etc/nginx/vhosts
 
 # Create upstream file for PHP
 cat <<EOF > /opt/local/etc/nginx/conf.d/upstream.conf
@@ -91,7 +92,7 @@ http {
 EOF
 
 # create nginx config for site
-cat <<EOF > "/opt/local/etc/nginx/conf.d/${siteURL}.conf"
+cat <<EOF > "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
 server {
         ## Your website name goes here.
         server_name ${siteURL};
