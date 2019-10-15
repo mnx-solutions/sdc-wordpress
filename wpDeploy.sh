@@ -223,7 +223,7 @@ siteProto="http://"
 ssl=0
 
 # Create variable from inputed ones
-siteFP="/home/wpuser/${siteURL}/public_html"
+siteFP="/home/wpuser/${siteURL}public_html"
 
 # get mdata
 mdata_get
