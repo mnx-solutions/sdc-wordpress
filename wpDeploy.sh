@@ -17,8 +17,14 @@ mdata_get () {
 siteName=$(mdata-get MsiteName)
 siteTitle=$(mdata-get MsiteTitle)
 #adminEmail=$(mdata-get MadminEmail)
-siteProto=$(mdata-get MsiteProto)
+#siteProto=$(mdata-get MsiteProto)
 siteURL=$(mdata-get MsiteURL)
+
+if [[ $(mdata-get MsiteProto) == "ssl" ]]; then
+	siteProto="https://"
+	ssl=1
+fi
+
 fullURL="${siteProto}${siteURL}"
 }
 
@@ -209,6 +215,10 @@ pkgin -y in php73-zip
 #                           Starts HERE                                #
 #                                                                      #
 ########################################################################
+
+# set defaults
+siteProto="http://"
+ssl=0
 
 # Create variable from inputed ones
 siteFP="/home/wpuser/${siteURL}/public_html"
