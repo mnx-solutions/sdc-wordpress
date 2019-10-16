@@ -41,7 +41,7 @@ mdata-put done_time $(date +'%Y%m%d_%H%M%S')
 genSSL () {
 mkdir -p "/opt/local/etc/nginx/ssl/${siteURL}/" || exit
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /opt/local/etc/nginx/ssl/${siteURL}/key -out /opt/local/etc/nginx/ssl/${siteURL}/crt \
-    -subj "/C=TEMP/ST=TEMP/L=TEMP/O=TEMP/OU=TEMP/CN=$siteURL/emailAddress=TEMP"
+    -subj "/C=TT/ST=TT/L=TT/O=TEMP/OU=TEMP/CN=$siteURL/emailAddress=TEMP"
 }
 vHostHTTP () {
 # create nginx config for site
