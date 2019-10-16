@@ -38,6 +38,141 @@ mdata-put full_URL ${fullURL}
 mdata-put done_time $(date +'%Y%m%d_%H%M%S')
 }
 
+genSSL () {
+mkdir -p "/opt/local/etc/nginx/ssl/${siteURL}/" || exit
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /opt/local/etc/nginx/ssl/${siteURL}/key -out /opt/local/etc/nginx/ssl/${siteURL}/crt \
+    -subj "/C=TEMP/ST=TEMP/L=TEMP/O=TEMP/OU=TEMP/CN=$siteURL/emailAddress=TEMP"
+}
+vHostHTTP () {
+# create nginx config for site
+cat <<EOF > "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
+server {
+        ## Your website name goes here.
+        server_name "${siteURL}";
+        ## Your only path reference.
+        root "${siteFP}";
+        ## This should be in your http block and if it is, it's not needed here.
+        index index.php;
+
+     location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    location ~ /\. {
+        access_log off;
+        log_not_found off;
+        deny all;
+    }
+
+    location ~* \\.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires max;
+        log_not_found off;
+    }
+
+
+    location / {
+        # This is cool because no php is touched for static content.
+        # include the "?\$args" part so non-default permalinks doesn't break when using query string
+        try_files \$uri \$uri/ /index.php?\$args;
+    }
+
+    # Pass PHP scripts to PHP-FPM
+    location ~* \\.php\$ {
+        fastcgi_index   index.php;
+        fastcgi_intercept_errors on;
+        fastcgi_pass    php;
+        #fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
+        include         fastcgi_params;
+        fastcgi_param   SCRIPT_FILENAME    \$document_root\$fastcgi_script_name;
+        fastcgi_param   SCRIPT_NAME        \$fastcgi_script_name;
+    }
+}
+EOF
+}
+
+vHostHTTPS () {
+# create nginx config for site
+cat <<EOF > "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
+server {
+    listen 80;
+    server_name "${siteURL}";
+    return 301 https://\$server_name\$request_uri;
+}
+
+server {
+    listen 443 ssl;
+        ## Your website name goes here.
+        server_name "${siteURL}";
+        ## Your only path reference.
+        root "${siteFP}";
+        ## This should be in your http block and if it is, it's not needed here.
+        index index.php;
+
+     location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    location ~ /\. {
+        access_log off;
+        log_not_found off;
+        deny all;
+    }
+
+    location ~* \\.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires max;
+        log_not_found off;
+    }
+
+
+    location / {
+        # This is cool because no php is touched for static content.
+        # include the "?\$args" part so non-default permalinks doesn't break when using query string
+        try_files \$uri \$uri/ /index.php?\$args;
+    }
+
+    # Pass PHP scripts to PHP-FPM
+    location ~* \\.php\$ {
+        fastcgi_index   index.php;
+        fastcgi_intercept_errors on;
+        fastcgi_pass    php;
+        #fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
+        include         fastcgi_params;
+        fastcgi_param   SCRIPT_FILENAME    \$document_root\$fastcgi_script_name;
+        fastcgi_param   SCRIPT_NAME        \$fastcgi_script_name;
+    }
+	ssl on;
+    ssl_certificate /opt/local/etc/nginx/ssl/${siteURL}/crt;
+    ssl_certificate_key /opt/local/etc/nginx/ssl/${siteURL}/key;
+
+    ssl_ciphers "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK";
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+    add_header X-Content-Type-Options nosniff;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver 8.8.8.8 4.2.2.1 valid=300s;
+    resolver_timeout 5s;
+}
+EOF
+genSSL
+}
+
 #### NGINX CONFIG FILE TEMPLATE ####
 nginx-conf () {
 # Make conf.d directory
@@ -98,57 +233,12 @@ http {
 }
 EOF
 
-# create nginx config for site
-cat <<EOF > "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
-server {
-        ## Your website name goes here.
-        server_name "${siteURL}";
-        ## Your only path reference.
-        root "${siteFP}";
-        ## This should be in your http block and if it is, it's not needed here.
-        index index.php;
-
-     location = /favicon.ico {
-        log_not_found off;
-        access_log off;
-    }
-
-    location = /robots.txt {
-        allow all;
-        log_not_found off;
-        access_log off;
-    }
-
-    location ~ /\. {
-        access_log off;
-        log_not_found off;
-        deny all;
-    }
-
-    location ~* \\.(js|css|png|jpg|jpeg|gif|ico)$ {
-        expires max;
-        log_not_found off;
-    }
-
-
-    location / {
-        # This is cool because no php is touched for static content.
-        # include the "?\$args" part so non-default permalinks doesn't break when using query string
-        try_files \$uri \$uri/ /index.php?\$args;
-    }
-
-    # Pass PHP scripts to PHP-FPM
-    location ~* \\.php\$ {
-        fastcgi_index   index.php;
-        fastcgi_intercept_errors on;
-        fastcgi_pass    php;
-        #fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
-        include         fastcgi_params;
-        fastcgi_param   SCRIPT_FILENAME    \$document_root\$fastcgi_script_name;
-        fastcgi_param   SCRIPT_NAME        \$fastcgi_script_name;
-    }
-}
-EOF
+if [[ "${ssl}" = 1 ]]; then
+	vHostHTTPS
+	genSSL
+else
+	vHostHTTP
+fi
 }
 #### END OF NGINX TEMPLATE
 
