@@ -351,13 +351,17 @@ wp core install --url="${siteURL}" --title="${siteTitle}" --admin_user="${adminE
 chown -R wpuser:wpgroup "/home/wpuser"
 
 # Config php
-sed -i "s#listen = 127.0.0.1:9000#listen = /var/run/php-fpm.sock#" /opt/local/etc/php-fpm.d/www.conf
+# php.ini change
 sed -i "s#;date.timezone =#date.timezone = America/New_York#g" /opt/local/etc/php.ini
 sed -i "s#upload_max_filesize = 2M#upload_max_filesize = 100M#g" /opt/local/etc/php.ini
 sed -i "s#memory_limit = 128M#memory_limit = 256M#g" /opt/local/etc/php.ini
+sed -i "s#post_max_size = 8M#post_max_size = 100M#g" /opt/local/etc/php.ini
+
+# www pool config change
+sed -i "s#listen = 127.0.0.1:9000#listen = /var/run/php-fpm.sock#" /opt/local/etc/php-fpm.d/www.conf
 sed -i "s#user = www#user = wpuser#g" /opt/local/etc/php-fpm.d/www.conf
 sed -i "s#group = www#group = wpgroup#g" /opt/local/etc/php-fpm.d/www.conf
-sed -i "s#post_max_size = 8M#post_max_size = 100M#g" /opt/local/etc/php.ini
+
 /usr/sbin/svcadm restart svc:/pkgsrc/php-fpm
 
 # Confiugre nginx and create config
