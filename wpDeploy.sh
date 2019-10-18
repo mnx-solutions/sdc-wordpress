@@ -103,15 +103,7 @@ cat <<EOF > "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
 server {
     listen 80;
     server_name "${siteURL}";
-
-    location ^~ /.well-known/acme-challenge/ {
-        alias /opt/local/www/acme/;
-        try_files \$uri =404;
-    }
-
-    location / {
-        return 301 https://\$server_name\$request_uri;
-    }
+    return 301 https://\$server_name\$request_uri;
 }
 
 server {
@@ -162,21 +154,18 @@ server {
         fastcgi_param   SCRIPT_FILENAME    \$document_root\$fastcgi_script_name;
         fastcgi_param   SCRIPT_NAME        \$fastcgi_script_name;
     }
-
-    server_tokens off;
+	ssl on;
     ssl_certificate /opt/local/etc/nginx/ssl/${siteURL}/crt;
     ssl_certificate_key /opt/local/etc/nginx/ssl/${siteURL}/key;
-    #ssl_dhparam dhparam.pem;
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
-    ssl_session_cache shared:SSL:10m;
-    ssl_session_timeout 10m;
-    ssl_session_tickets off;
-    ssl_stapling on;
-    ssl_stapling_verify on;
+
+    ssl_ciphers "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK";
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_prefer_server_ciphers on;
-    ssl_ciphers 'ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5';
-
+    ssl_session_cache shared:SSL:10m;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+    add_header X-Content-Type-Options nosniff;
+    ssl_stapling on;
+    ssl_stapling_verify on;
     resolver 8.8.8.8 4.2.2.1 valid=300s;
     resolver_timeout 5s;
 }
@@ -238,6 +227,8 @@ http {
     gzip_http_version 1.1;
     gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
+    client_max_body_size 100M;
+	
     include /opt/local/etc/nginx/conf.d/*.conf;
     include /opt/local/etc/nginx/vhosts/*.conf;
 
@@ -364,6 +355,7 @@ sed -i "s#listen = 127.0.0.1:9000#listen = /var/run/php-fpm.sock#" /opt/local/et
 sed -i "s#;date.timezone =#date.timezone = America/New_York#g" /opt/local/etc/php.ini
 sed -i "s#user = www#user = wpuser#g" /opt/local/etc/php-fpm.d/www.conf
 sed -i "s#group = www#group = wpgroup#g" /opt/local/etc/php-fpm.d/www.conf
+sed -i "s#post_max_size = 8M#post_max_size = 100M#g" /opt/local/etc/php-fpm.d/www.conf
 /usr/sbin/svcadm restart svc:/pkgsrc/php-fpm
 
 # Confiugre nginx and create config
