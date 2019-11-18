@@ -1,7 +1,7 @@
 # installWP
 Installs WordPress from nothing on smartOS.  
 
-This installs the following  
+This installs and configures the following  
 * NGINX  
 * PHP-FPM  
 * MySQL  
