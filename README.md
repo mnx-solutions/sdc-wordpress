@@ -1,8 +1,6 @@
 # installWP
 install wordpress from nothing on smartOS 
 
-I still need to work on mdata-get, but other than that I think it's complete. 
-
 MsiteName: site name  
 MsiteTitle: site title  
 MsiteProto: ssl for ssl don't include the variable if not ssl  
