@@ -1,5 +1,13 @@
 # installWP
-install wordpress from nothing on smartOS 
+Installs WordPress from nothing on smartOS.  
+
+This installs the following  
+* NGINX  
+* PHP-FPM  
+* MySQL  
+* WordPress  
+
+Right now this can only do one site, but eventually I'd like to have it do more than one.  
 
 MsiteName: site name  
 MsiteTitle: site title  
