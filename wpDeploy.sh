@@ -43,6 +43,11 @@ mkdir -p "/opt/local/etc/nginx/ssl/${siteURL}/" || exit
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /opt/local/etc/nginx/ssl/${siteURL}/key -out /opt/local/etc/nginx/ssl/${siteURL}/crt \
     -subj "/C=TT/ST=TT/L=TT/O=TEMP/OU=TEMP/CN=$siteURL/emailAddress=TEMP"
 }
+
+addCron () {
+echo '30,60 * * * * root /root/sdc-wordpress/wpCertbot.sh' >> /etc/crontab
+}
+
 vHostHTTP () {
 # create nginx config for site
 cat <<EOF > "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
@@ -234,15 +239,18 @@ http {
 
 }
 EOF
-
-if [[ "${ssl}" = 1 ]]; then
-	vHostHTTPS
-	genSSL
-else
-	vHostHTTP
-fi
 }
 #### END OF NGINX TEMPLATE
+
+sslConfig () {
+if [[ "${ssl}" = 1 ]]; then
+        vHostHTTPS
+        genSSL
+        addCron
+else
+        vHostHTTP
+fi
+}
 
 create_wp_db () {
 # Create root mysql user passwd
@@ -353,9 +361,9 @@ chown -R wpuser:wpgroup "/home/wpuser"
 # Config php
 # php.ini change
 sed -i "s#;date.timezone =#date.timezone = America/New_York#g" /opt/local/etc/php.ini
-sed -i "s#upload_max_filesize = 2M#upload_max_filesize = 100M#g" /opt/local/etc/php.ini
-sed -i "s#memory_limit = 128M#memory_limit = 256M#g" /opt/local/etc/php.ini
-sed -i "s#post_max_size = 8M#post_max_size = 100M#g" /opt/local/etc/php.ini
+sed -i "s#upload_max_filesize = 2M#upload_max_filesize = 99M#g" /opt/local/etc/php.ini
+#sed -i "s#memory_limit = 128M#memory_limit = 256M#g" /opt/local/etc/php.ini
+sed -i "s#post_max_size = 8M#post_max_size = 99M#g" /opt/local/etc/php.ini
 
 # www pool config change
 sed -i "s#listen = 127.0.0.1:9000#listen = /var/run/php-fpm.sock#" /opt/local/etc/php-fpm.d/www.conf
@@ -366,6 +374,7 @@ sed -i "s#group = www#group = wpgroup#g" /opt/local/etc/php-fpm.d/www.conf
 
 # Confiugre nginx and create config
 nginx-conf
+sslConfig
 /usr/sbin/svcadm restart svc:/pkgsrc/nginx
 
 # Echo errythang that matters

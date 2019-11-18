@@ -53,12 +53,18 @@ EOF
 chmod +x /opt/local/etc/acme/renew.sh
 }
 
+
+removeCron () {
+sed -i 's#30,60 \* \* \* \* root /root/sdc-wordpress/wpCertbot.sh##g' /etc/crontab
+}
+
 ##########################################################################
 #                                                                        #
-#                           START HERE                                   #
+#                           START HERE #
 #                                                                        #
 ##########################################################################
 
 if [[ $(mdata-get McbReady) == "yes" ]]; then
 	doIt
+	removeCron
 fi
