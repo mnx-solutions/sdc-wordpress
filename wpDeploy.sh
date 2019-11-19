@@ -48,7 +48,7 @@ addCron () {
 cd /root/sdc-wordpress || exit
 curl -s -o 'wpCertbot.sh' 'https://raw.githubusercontent.com/mnx-solutions/sdc-wordpress/master/wpCertbot.sh'
 #wget 'https://raw.githubusercontent.com/mnx-solutions/sdc-wordpress/master/wpCertbot.sh' -O /root/sdc-wordpress/wpCertbot.sh
-echo '30,60 * * * * root /root/sdc-wordpress/wpCertbot.sh' >> /etc/cron.d/crontabs/wpCertbot
+echo '30,60 * * * * root /root/sdc-wordpress/wpCertbot.sh' > /etc/cron.d/crontabs/wpCertbot
 }
 
 vHostHTTP () {
