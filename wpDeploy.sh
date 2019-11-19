@@ -39,6 +39,26 @@ mdata-put full_URL ${fullURL}
 mdata-put done_time $(date +'%Y%m%d_%H%M%S')
 }
 
+startNGINX () {
+# Install NGINX
+pkgin -y in nginx
+
+# Config nginx 
+nginx-conf
+
+cat <<EOF > "/opt/local/etc/nginx/vhosts/default.conf"
+server {
+    listen 80;
+    server_name _;
+    return 200 "Site is being built please wait a at least 5 minutes\n";
+    add_header Content-Type text/plain;
+}
+EOF
+
+# stat nginx with building page
+/usr/sbin/svcadm enable -r svc:/pkgsrc/nginx:default
+}
+
 genSSL () {
 mkdir -p "/opt/local/etc/nginx/ssl/${siteURL}/" || exit
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /opt/local/etc/nginx/ssl/${siteURL}/key -out /opt/local/etc/nginx/ssl/${siteURL}/crt \
@@ -362,7 +382,7 @@ usermod -G wpgroup wpuser
 install_deps
 
 # Enable errythang
-/usr/sbin/svcadm enable -r svc:/pkgsrc/nginx:default
+#/usr/sbin/svcadm enable -r svc:/pkgsrc/nginx:default
 /usr/sbin/svcadm enable -r svc:/pkgsrc/php-fpm:default
 
 # do mysql stuff
