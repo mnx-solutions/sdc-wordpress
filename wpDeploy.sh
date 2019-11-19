@@ -35,7 +35,7 @@ mdata-put wpadmin_password ${wpapasswd}
 mdata-put root_SQL_password ${sqlpswd}
 mdata-put wp_SQL_password ${wpasswd}
 mdata-put full_URL ${fullURL}
-mdata-put start_time ${startTime}
+#mdata-put start_time ${startTime}
 mdata-put done_time $(date +'%Y%m%d_%H%M%S')
 }
 
@@ -328,7 +328,7 @@ pkgin -y in php73-zip
 ########################################################################
 
 #Get start time
-startTime=$(date +'%Y%m%d_%H%M%S')
+mdata-put start_time $(date +'%Y%m%d_%H%M%S')
 
 # set defaults
 siteProto="http://"
