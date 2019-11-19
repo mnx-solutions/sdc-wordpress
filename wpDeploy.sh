@@ -361,6 +361,9 @@ sed -i 's/Port 22/Port 2233/g' /etc/ssh/sshd_config
 #                                                                      #
 ########################################################################
 
+# install generic built page to let poeple know site is being built and might take a while
+startNGINX
+
 #Get start time
 mdata-put start_time $(date +'%Y%m%d_%H%M%S')
 
@@ -419,9 +422,10 @@ sed -i "s#group = www#group = wpgroup#g" /opt/local/etc/php-fpm.d/www.conf
 /usr/sbin/svcadm restart svc:/pkgsrc/php-fpm
 
 # Confiugre nginx and create config
-nginx-conf
+#nginx-conf
 sslConfig
-/usr/sbin/svcadm restart svc:/pkgsrc/nginx
+nginx -s reload
+#/usr/sbin/svcadm restart svc:/pkgsrc/nginx
 
 # Echo errythang that matters
 echo "The SQL root password is: ${sqlpswd} and the WP sql password is: ${wpasswd}"
