@@ -79,13 +79,14 @@ crontab /root/sdc-wordpress/cron
 if [[ $(mdata-get McbReady) == "yes" ]]; then
 	if [[ -f "/root/sdc-wordpress/certbot.lok" ]]; then
 	echo "already running"
+	echo "Not Done lock file present: $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
 	else
 		touch "/root/sdc-wordpress/certbot.lok"
 		doIt
 		removeCron
 		echo "DONE: $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
 		rm -f "/root/sdc-wordpress/certbot.lok"
-	else
-		echo "Not Done: $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
 	fi
+else
+	echo "Not Done McbReady not set to \"yes\": $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
 fi
