@@ -79,7 +79,7 @@ crontab /root/sdc-wordpress/cron
 if [[ $(mdata-get McbReady) == "yes" ]]; then
 	if [[ -f "/root/sdc-wordpress/certbot.lok" ]]; then
 	echo "already running"
-	elif
+	else
 		touch "/root/sdc-wordpress/certbot.lok"
 		doIt
 		removeCron
