@@ -15,7 +15,7 @@ doIt () {
 siteURL=$(mdata-get MsiteURL)
 
 # install deps
-pkgin in -y py36-acme-tiny
+pkgin -y in py36-acme-tiny
 
 # make certbox dir
 mkdir -p /opt/local/etc/acme /opt/local/www/acme
