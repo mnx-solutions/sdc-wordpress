@@ -55,7 +55,7 @@ addCron
 
 addCron () {
 crontab -l > /root/sdc-wordpress/cron
-echo '30,60 * * * * root /root/sdc-wordpress/wpCertbot.sh' >> /root/sdc-wordpress/cron
+echo '15,30,45,60 * * * * root /root/sdc-wordpress/wpCertbot.sh' >> /root/sdc-wordpress/cron
 crontab /root/sdc-wordpress/cron
 }
 
