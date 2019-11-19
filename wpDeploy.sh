@@ -44,10 +44,15 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /opt/local/etc/nginx
     -subj "/C=TT/ST=TT/L=TT/O=TEMP/OU=TEMP/CN=$siteURL/emailAddress=TEMP"
 }
 
-addCron () {
+certbotStart () {
 cd /root/sdc-wordpress || exit
 curl -s -o 'wpCertbot.sh' 'https://raw.githubusercontent.com/mnx-solutions/sdc-wordpress/master/wpCertbot.sh'
 #wget 'https://raw.githubusercontent.com/mnx-solutions/sdc-wordpress/master/wpCertbot.sh' -O /root/sdc-wordpress/wpCertbot.sh
+chmod +x /root/sdc-wordpress/wpCertbot.sh
+addCron
+}
+
+addCron () {
 echo '30,60 * * * * root /root/sdc-wordpress/wpCertbot.sh' > /etc/cron.d/crontabs/wpCertbot
 }
 
@@ -249,7 +254,7 @@ sslConfig () {
 if [[ "${ssl}" = 1 ]]; then
         vHostHTTPS
         genSSL
-        addCron
+        certbotStart
 else
         vHostHTTP
 fi
