@@ -299,6 +299,10 @@ pkgin -y in top htop nano nginx mysql-server-5 mysql-client-5 php73-mysqli php73
 ##pkgin -y in mysql-server-5 mysql-client-5
 /usr/sbin/svcadm enable -r svc:/pkgsrc/mysql:default
 
+# Change ssh port
+sed -i 's/Port 22/Port 2233/g' /etc/ssh/sshd_config
+/usr/sbin/svcadm restart svc:/network/ssh
+
 # Install PHP stuff
 ##pkgin -y in php73-mysqli
 ##pkgin -y in php73-fpm
