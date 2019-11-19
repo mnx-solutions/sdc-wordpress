@@ -2,12 +2,6 @@
 # Nick Leffler
 # Deploy certbot v1
 
-# get siteURL
-siteURL=$(mdata-get MsiteURL)
-
-# install deps
-pkgin in -y py36-acme-tiny
-
 changeSSL () {
 # replace data in nginx conf for certbot
 sed -i 's#ssl_certificate /opt/local/etc/nginx/ssl/${siteURL}/crt;#ssl_certificate /opt/local/etc/acme/fullchain.pem;#g' "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
@@ -16,6 +10,13 @@ sed -i 's#ssl_certificate_key /opt/local/etc/nginx/ssl/${siteURL}/key;#ssl_certi
 }
 
 doIt () {
+
+# get siteURL
+siteURL=$(mdata-get MsiteURL)
+
+# install deps
+pkgin in -y py36-acme-tiny
+
 # make certbox dir
 mkdir -p /opt/local/etc/acme /opt/local/www/acme
 
