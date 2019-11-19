@@ -119,7 +119,15 @@ cat <<EOF > "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
 server {
     listen 80;
     server_name "${siteURL}";
-    return 301 https://\$server_name\$request_uri;
+
+    location ^~ /.well-known/acme-challenge/ {
+        alias /opt/local/www/acme/;
+        try_files $uri =404;
+    }
+
+    location / {
+        return 301 https://\$server_name\$request_uri;
+    }
 }
 
 server {
