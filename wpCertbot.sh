@@ -55,8 +55,9 @@ chmod +x /opt/local/etc/acme/renew.sh
 
 
 removeCron () {
-rm -f /etc/cron.d/crontabs/wpCertbot
-#sed -i 's#30,60 \* \* \* \* root /root/sdc-wordpress/wpCertbot.sh##g' /etc/crontab
+#rm -f /etc/cron.d/crontabs/wpCertbot
+sed -i 's#30,60 \* \* \* \* root /root/sdc-wordpress/wpCertbot.sh##g' /root/sdc-wordpress/cron
+crontab /root/sdc-wordpress/cron
 }
 
 ##########################################################################

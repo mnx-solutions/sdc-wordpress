@@ -54,7 +54,9 @@ addCron
 }
 
 addCron () {
-echo '30,60 * * * * root /root/sdc-wordpress/wpCertbot.sh' > /etc/cron.d/crontabs/wpCertbot
+crontab -l > /root/sdc-wordpress/cron
+echo '30,60 * * * * root /root/sdc-wordpress/wpCertbot.sh' >> /root/sdc-wordpress/cron
+crontab /root/sdc-wordpress/cron
 }
 
 vHostHTTP () {
