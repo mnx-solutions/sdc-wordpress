@@ -37,7 +37,7 @@ curl -s 'https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem' > /opt/
 cat /opt/local/etc/acme/signed.crt /opt/local/etc/acme/intermediate.pem > /opt/local/etc/acme/fullchain.pem
 
 # generate dhparam THIS WILL TAKE FOREVER
-openssl dhparam 4096 > /opt/local/etc/nginx/dhparam.pem
+openssl dhparam -dsaparam 4096 > /opt/local/etc/nginx/dhparam.pem
 
 changeSSL
 
