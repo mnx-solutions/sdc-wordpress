@@ -44,6 +44,7 @@ if [[ $(mdata-get McbReady) == "yes" ]]; then
 	bash /root/sdc-wordpress/wpCertbot.sh
 #else
 fi
+}
 
 startNGINX () {
 # Install NGINX
