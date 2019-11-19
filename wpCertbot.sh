@@ -8,14 +8,16 @@ siteURL=$(mdata-get MsiteURL)
 # install deps
 pkgin in -y py36-acme-tiny
 
-doIt () {
-# make certbox dir
-mkdir -p /opt/local/etc/acme /opt/local/www/acme
-
+changeSSL () {
 # replace data in nginx conf for certbot
 sed -i 's#ssl_certificate /opt/local/etc/nginx/ssl/${siteURL}/crt;#ssl_certificate /opt/local/etc/acme/fullchain.pem;#g' "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
 sed -i 's#ssl_certificate_key /opt/local/etc/nginx/ssl/${siteURL}/key;#ssl_certificate_key /opt/local/etc/acme/domain.key;#g' "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
-sed -i '#ssl_dhparam dhparam.pem;/ssl_dhparam dhparam.pem;/g' "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
+#sed -i '#ssl_dhparam dhparam.pem;/ssl_dhparam dhparam.pem;/g' "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
+}
+
+doIt () {
+# make certbox dir
+mkdir -p /opt/local/etc/acme /opt/local/www/acme
 
 cd /opt/local/etc/acme || exit
 
@@ -36,6 +38,8 @@ cat /opt/local/etc/acme/signed.crt /opt/local/etc/acme/intermediate.pem > /opt/l
 # generate dhparam THIS WILL TAKE FOREVER
 openssl dhparam 4096 > /opt/local/etc/nginx/dhparam.pem
 
+changeSSL
+
 # reload nginx
 nginx -s reload
 }
@@ -51,6 +55,10 @@ nginx -s reload
 EOF
 
 chmod +x /opt/local/etc/acme/renew.sh
+
+crontab -l > /root/sdc-wordpress/cron
+echo "5 5 * * * root /opt/local/etc/acme/renew.sh" >> /root/sdc-wordpress/cron
+crontab /root/sdc-wordpress/cron
 }
 
 
@@ -74,3 +82,4 @@ if [[ $(mdata-get McbReady) == "yes" ]]; then
 else
 	echo "Not Done: $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
 fi
+
