@@ -68,4 +68,7 @@ rm -f /etc/cron.d/crontabs/wpCertbot
 if [[ $(mdata-get McbReady) == "yes" ]]; then
 	doIt
 	removeCron
+	echo "DONE: $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
+else
+	echo "Not Done: $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
 fi
