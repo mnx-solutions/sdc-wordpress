@@ -290,37 +290,37 @@ mysql -e "FLUSH PRIVILEGES"
 
 install_deps () {
 # Installed needed items
-pkgin -y in top
-pkgin -y in htop
-pkgin -y in nano
-pkgin -y in nginx
+pkgin -y in top htop nano nginx mysql-server-5 mysql-client-5 php73-mysqli php73-fpm php73-zlib php73-yaml php73-xsl php73-wddx php73-xmlrpc php73-tidy php73-soap php73-pspell php73-pecl-mcrypt php73-opcache php73-mbstring php73-json php73-imagick php73-iconv php73-gd php73-curl php73-bcmath php73-bz2 php73-zip
+##pkgin -y in htop
+##pkgin -y in nano
+##pkgin -y in nginx
 #pkgin -y in mariadb-server-10
 #pkgin -y in mysql-server-5.7.26nb2 mysql-client-5.7.26nb2
-pkgin -y in mysql-server-5 mysql-client-5
+##pkgin -y in mysql-server-5 mysql-client-5
 /usr/sbin/svcadm enable -r svc:/pkgsrc/mysql:default
 
 # Install PHP stuff
-pkgin -y in php73-mysqli
-pkgin -y in php73-fpm
-pkgin -y in php73-zlib
-pkgin -y in php73-yaml
-pkgin -y in php73-xsl
-pkgin -y in php73-wddx
-pkgin -y in php73-xmlrpc
-pkgin -y in php73-tidy
-pkgin -y in php73-soap
-pkgin -y in php73-pspell
-pkgin -y in php73-pecl-mcrypt
-pkgin -y in php73-opcache
-pkgin -y in php73-mbstring
-pkgin -y in php73-json
-pkgin -y in php73-imagick
-pkgin -y in php73-iconv
-pkgin -y in php73-gd
-pkgin -y in php73-curl
-pkgin -y in php73-bcmath
-pkgin -y in php73-bz2
-pkgin -y in php73-zip
+##pkgin -y in php73-mysqli
+##pkgin -y in php73-fpm
+##pkgin -y in php73-zlib
+##pkgin -y in php73-yaml
+##pkgin -y in php73-xsl
+##pkgin -y in php73-wddx
+##pkgin -y in php73-xmlrpc
+##pkgin -y in php73-tidy
+##pkgin -y in php73-soap
+##pkgin -y in php73-pspell
+##pkgin -y in php73-pecl-mcrypt
+##pkgin -y in php73-opcache
+##pkgin -y in php73-mbstring
+##pkgin -y in php73-json
+##pkgin -y in php73-imagick
+##pkgin -y in php73-iconv
+##pkgin -y in php73-gd
+##pkgin -y in php73-curl
+##pkgin -y in php73-bcmath
+##pkgin -y in php73-bz2
+##pkgin -y in php73-zip
 }
 
 ########################################################################
