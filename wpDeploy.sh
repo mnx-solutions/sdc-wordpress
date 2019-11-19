@@ -122,7 +122,7 @@ server {
 
     location ^~ /.well-known/acme-challenge/ {
         alias /opt/local/www/acme/;
-        try_files $uri =404;
+        try_files \$uri =404;
     }
 
     location / {
