@@ -44,7 +44,6 @@ if [[ $(mdata-get McbReady) == "yes" ]]; then
 	bash /root/sdc-wordpress/wpCertbot.sh
 #else
 fi
-}
 
 startNGINX () {
 # Install NGINX
@@ -325,7 +324,7 @@ mysql -e "FLUSH PRIVILEGES"
 
 install_deps () {
 # Installed needed items
-pkgin -y in top htop nano nginx mysql-server-5 mysql-client-5 php73-mysqli php73-fpm php73-zlib php73-yaml php73-xsl php73-wddx php73-xmlrpc php73-tidy php73-soap php73-pspell php73-pecl-mcrypt php73-opcache php73-mbstring php73-json php73-imagick php73-iconv php73-gd php73-curl php73-bcmath php73-bz2 php73-zip
+pkgin -y in top htop nano mysql-server-5 mysql-client-5 php73-mysqli php73-fpm php73-zlib php73-yaml php73-xsl php73-wddx php73-xmlrpc php73-tidy php73-soap php73-pspell php73-pecl-mcrypt php73-opcache php73-mbstring php73-json php73-imagick php73-iconv php73-gd php73-curl php73-bcmath php73-bz2 php73-zip
 ##pkgin -y in htop
 ##pkgin -y in nano
 ##pkgin -y in nginx
