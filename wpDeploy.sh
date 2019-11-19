@@ -368,9 +368,6 @@ sed -i 's/Port 22/Port 2233/g' /etc/ssh/sshd_config
 #                                                                      #
 ########################################################################
 
-# install generic built page to let poeple know site is being built and might take a while
-startNGINX
-
 #Get start time
 mdata-put start_time $(date +'%Y%m%d_%H%M%S')
 
@@ -389,6 +386,10 @@ useradd wpuser
 groupadd wpgroup
 usermod -G wpgroup wpuser
 
+# install generic built page to let poeple know site is being built and might take a while
+startNGINX
+
+# install deps
 install_deps
 
 # Enable errythang
