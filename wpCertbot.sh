@@ -77,10 +77,15 @@ crontab /root/sdc-wordpress/cron
 ##########################################################################
 
 if [[ $(mdata-get McbReady) == "yes" ]]; then
-	doIt
-	removeCron
-	echo "DONE: $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
-else
-	echo "Not Done: $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
+	if [[ -f "/root/sdc-wordpress/certbot.lok" ]]; then
+	echo "already running"
+	elif
+		touch "/root/sdc-wordpress/certbot.lok"
+		doIt
+		removeCron
+		echo "DONE: $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
+		rm -f "/root/sdc-wordpress/certbot.lok"
+	else
+		echo "Not Done: $(date +'%Y%m%d_%H%M')" >> /root/sdc-wordpress/certbot.log
+	fi
 fi
-
