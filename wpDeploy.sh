@@ -432,6 +432,11 @@ sed -i "s#group = www#group = wpgroup#g" /opt/local/etc/php-fpm.d/www.conf
 # Confiugre nginx and create config
 #nginx-conf
 sslConfig
+
+# remove old nginx config for default page since it's no longer needed
+rm -f /opt/local/etc/nginx/vhosts/default.conf
+
+# reload nginx for new config
 nginx -s reload
 #/usr/sbin/svcadm restart svc:/pkgsrc/nginx
 
