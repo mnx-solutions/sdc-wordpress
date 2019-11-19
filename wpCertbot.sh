@@ -4,8 +4,8 @@
 
 changeSSL () {
 # replace data in nginx conf for certbot
-sed -i 's#ssl_certificate /opt/local/etc/nginx/ssl/${siteURL}/crt;#ssl_certificate /opt/local/etc/acme/fullchain.pem;#g' "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
-sed -i 's#ssl_certificate_key /opt/local/etc/nginx/ssl/${siteURL}/key;#ssl_certificate_key /opt/local/etc/acme/domain.key;#g' "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
+sed -i "s#ssl_certificate /opt/local/etc/nginx/ssl/${siteURL}/crt;#ssl_certificate /opt/local/etc/acme/fullchain.pem;#g" "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
+sed -i "s#ssl_certificate_key /opt/local/etc/nginx/ssl/${siteURL}/key;#ssl_certificate_key /opt/local/etc/acme/domain.key;#g" "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
 #sed -i '#ssl_dhparam dhparam.pem;/ssl_dhparam dhparam.pem;/g' "/opt/local/etc/nginx/vhosts/${siteURL}.conf"
 }
 
