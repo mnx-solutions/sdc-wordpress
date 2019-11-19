@@ -3,7 +3,8 @@
 # /var/zoneinit/includes/30-checkWPdeploy.sh
 
 if [[ $(mdata-get MWPinstall) == "yes" ]]; then
-	cd /root/
+	mkdir -p /root/sdc-wordpress
+	cd /root/sdc-wordpress
 	curl -s -o 'wpDeploy.sh' 'https://raw.githubusercontent.com/mnx-solutions/sdc-wordpress/master/wpDeploy.sh'
 	chmod './wpDeploy.sh'
 	bash -x './wpDeploy.sh'
