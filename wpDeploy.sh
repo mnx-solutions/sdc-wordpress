@@ -39,6 +39,13 @@ mdata-put full_URL ${fullURL}
 mdata-put done_time $(date +'%Y%m%d_%H%M%S')
 }
 
+wpCertbot () {
+if [[ $(mdata-get McbReady) == "yes" ]]; then
+	bash /root/sdc-wordpress/wpCertbot.sh
+#else
+fi
+}
+
 startNGINX () {
 # Install NGINX
 pkgin -y in nginx
@@ -432,5 +439,7 @@ echo "The SQL root password is: ${sqlpswd} and the WP sql password is: ${wpasswd
 echo "${siteName} is at ${siteProto}${siteURL} with the title ${siteTitle} and the admin email of ${adminEmail}"
 echo "The wp-admin email/username is: ${adminEmail} and the password is: ${wpapasswd}"
 echo "Thank you and have a great day"
+
+wpCertbot
 
 mdata_put
