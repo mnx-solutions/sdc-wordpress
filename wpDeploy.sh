@@ -440,6 +440,9 @@ rm -f /opt/local/etc/nginx/vhosts/default.conf
 nginx -s reload
 #/usr/sbin/svcadm restart svc:/pkgsrc/nginx
 
+# Change pemissions for nginx cache
+chown wpuser:wpgroup -R /var/db/nginx/
+
 # Echo errythang that matters
 echo "The SQL root password is: ${sqlpswd} and the WP sql password is: ${wpasswd}"
 echo "${siteName} is at ${siteProto}${siteURL} with the title ${siteTitle} and the admin email of ${adminEmail}"
